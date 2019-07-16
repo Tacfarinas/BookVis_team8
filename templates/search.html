@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Book Search
+{% endblock %}
+
+{% block body %}
+    <h3 style="text-align: center">{{ message }}</h3>
+    <form class='testing'>
+        <div class='row'>
+            <div class='col-lg-1 col-sm-1'>
+            </div>
+            <div class='col-lg-10 col-sm-10'>
+                <br/>
+                <form class='form-search'>
+                    <input type='text' name='book_title' class='form-control' placeholder='Book Title' required='' autofocus=''>
+                    <input type='password' name='author' class='form-control' placeholder='Author' required=''>
+                    <br/>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                        </div>
+                    </div>
+                    <!--
+                    <br/>
+                    TODO: add input to attach a camera input
+                    -->
+                    <br/>
+                    <div class='row'>
+                        <div class='col-lg-4 col-md-3 col-sm-0'>
+                        </div>
+                        <div class='col-lg-4 col-md-6 col-sm-12'>
+                            <button class='btn btn-lg btn-primary btn-block' name='scan' type='submit'>Scan</button>
+                            <br/>
+                        </div>
+                        <div class='col-lg-4 col-md-3 col-sm-0'>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class='col-lg-1 col-sm-1'>
+            </div>
+        </div>
+    </form>
+{% endblock %}
