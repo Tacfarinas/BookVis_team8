@@ -1,5 +1,3 @@
-
-
 function searchBooks_(query) {
   
   var baseUrl = "https://www.goodreads.com/book/show/",

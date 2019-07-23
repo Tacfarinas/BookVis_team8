@@ -7,5 +7,10 @@ def search():
     return render_template('search.html')
 
 
+@app.route('/charts')
+def graphs():
+    return render_template('charts.html')
+
+
 if __name__ == '__main__':
     app.run()
