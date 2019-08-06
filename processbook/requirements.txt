@@ -1,0 +1,7 @@
+seaborn
+wordcloud
+nltk
+image
+distance
+gender_guesser
+rpy2
