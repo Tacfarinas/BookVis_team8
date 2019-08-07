@@ -1,8 +1,12 @@
 # Visualizing Readme Data - Team 8
 
-The goal of our project is to give visual representation to a user's library as it was exported from Goodreads, using seaborn visualizations and/or D3 visualizations. 
+Jupyter notebook was used to generates visual representation to a user's library as it was exported from Goodreads. Below are the results of my personal library. 
 
-Later version will allow for a user to import their own Goodreads data to view various intuitive visual representations.
+You can use it with your own data - go here a and press "Export your library" to get your own csv. 
+
+To get the interactive version. Replace the path to my Goodreads exported file by yours in the ipynb file or over-write over the CSV with the same file name. 
+
+### Heroku Link
 
 
 ### Prerequisites
@@ -13,7 +17,11 @@ Below are some ofthe python packages that will be required.
 seaborn
 pandas
 wordcloud
-scikit-learn
+nltk
+distance
+image (PIL inside python for some weird reason)
+gender_guesser
+rpy2
 ```
 
 ## Relationship plots 
@@ -27,23 +35,11 @@ The relationships of interest to be visualized are currently:
 
 More to come in the future!
 
-### TO-DO List
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
 ## Authors
 
 * **Wail Choudar** - [Github](https://github.com/tacfarinas)
 * **Aditya Bagaria** - [Github](https://github.com/adbag19)
 
-
-## License
-
-Remains to be decided
 
 ## Acknowledgments
 
