@@ -4,12 +4,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def search():
-    return render_template('search.html')
-
-
-@app.route('/charts')
-def graphs():
-    return render_template('charts.html')
+    return render_template('index.html')
 
 
 if __name__ == '__main__':
