@@ -1,98 +1,283 @@
-{% extends 'layout.html' %}
-<script type="text/javascript" src="/static/js/api.js"></script>
-{% block title %}
-    Book Search
-{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Team 8 - Goodreads User Metrics</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <style>
+  body {
+      position: relative;
+  }
+  #section1 {padding-top:50px;height:500px;color: #000000; background-color: #E0F4FF;}
+  #section2 {padding-top:50px;height:900px;color: #000000; background-color: #ffffff;}
+  #section3 {padding-top:50px;height:800px;color: #000000; background-color: #E0F4FF;}
+  #section4 {padding-top:50px;height:1250px;color: #000000; background-color: #ffffff;}
+  #section5 {padding-top:50px;height:1300px;color: #000000; background-color: #E0F4FF;}
+  #section6 {padding-top:50px;height:800px;color: #000000; background-color: #ffffff;}
+  #section7 {padding-top:50px;height:1500px;color: #000000; background-color: #E0F4FF;}
 
-{% block body %}
-    <h3 style="text-align: center">{{ message }}</h3>
-    <form class='testing'>
-        <div class='row'>
-            <div class='col-lg-1 col-sm-1'>
-            </div>
-            <div class='col-lg-10 col-sm-10'>
-                <br/>
-                <script>function searchBooks_(query) {
+  </style>
+</head>
+<body data-spy="scroll" data-target=".navbar" data-offset="50">
 
-  var baseUrl = "https://www.goodreads.com/book/show/",
-      apiUrl = "https://www.goodreads.com/search/index.xml",
-      apiKey = "BHwsvEAI5cLvfbBayis8ug",
-      searchResults = [],
-      payload = {
-        q: query,
-        key: BHwsvEAI5cLvfbBayis8ug
-      },
-      params = {
-        method: "GET",
-        payload: payload,
-        muteHttpExceptions: true
-      };
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">&#x1F4DA; Goodreads User Metrics</a>
+    </div>
+    <div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li><a href="#section1">Intro</a></li>
+          <li><a href="#section2">Score Distribution</a></li>
+          <li><a href="#section3">Pages vs Ratings</a></li>
+          <li><a href="#section4">Ratings vs Bookshelves</a></li>
+            <li><a href="#section5">Heatmap of dates read</a></li>
+             <li><a href="#section6">Books read by year</a></li>
+            <li><a href="#section7">Word Cloud</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
 
-  var response = UrlFetchApp.fetch(apiUrl, params);
+<div id="section1" class="container-fluid">
+  <h1>Visualizing Goodreads User Metrics  - Team 8 project</h1>
+    <p>Jupyter notebook was used to generates visual representation to a user's library as it was exported from Goodreads. Below are the results of my personal library.
+    </br></br>
+        You can use it with your own data - go <a href="https://www.goodreads.com/review/import">here</a> a and press "Export your library" to get your own csv.
+    </br></br>
+     To get the interactive version. Replace the path to my Goodreads exported file by yours in the ipynb file or over-write over the CSV with the same file name.
+    </br></br>
+        <b>Python packages</b>
+<ul>
+    <li>seaborn</li>
+    <li>pandas</li>
+    <li>wordcloud</li>
+    <li>nltk</li>
+    <li>distance</li>
+    <li>image (PIL inside python for some weird reason)</li>
+    <li>gender_guesser</li>
+    <li>rpy2</li>
+</ul>
+    </br>
+    <b>OK, let's start!</b>
+    </p>
 
-  // API Connection Successful
-  if (response.getResponseCode() === 200) {
+</div>
+<div id="section2" class="container-fluid">
+    <h1>Score distribution</h1>
+    <p>With a score scale of 1-5, you'd expect that the average score is 3 (since 0 is not counted) after a f
+        ew hundred books (in other words, is it a normal distribution?)</p>
+    </br>
+    <pre><code>
+        g = sns.distplot(cleaned_df["My Rating"], kde=False)
+        "Average: %.2f"%cleaned_df["My Rating"].mean(), "Median: %s"%cleaned_df["My Rating"].median()
+    </code></pre>
+    </br>
+    <img src="/static/img/1.png" alt="graph 1">
+    </br>
+    <p>That doesn't look normally distributed to me - let's ask Shapiro-Wilk (null hypothesis: data is drawn from normal distribution):</p>
+    </br>
+    <pre><code>W, p_value = scipy.stats.shapiro(cleaned_df["My Rating"])
+if p_value < 0.05:
+    print("Rejecting null hypothesis - data does not come from a normal distribution (p=%s)"%p_value)
+else:
+    print("Cannot reject null hypothesis (p=%s)"%p_value)</code></pre>
+    </br>
+    <p>Rejecting null hypothesis - data does not come from a normal distribution (p=6.528215901885348e-12)
+In my case, the data is not normally distributed (in other words, the book scores are not evenly distributed
+        around the middle). If you think about it, this makes sense: most readers don't read perfectly randomly,
+        I avoid books I believe I'd dislike, and choose books that I prefer. I rate those books higher than average,
+        therefore, my curve of scores is slanted towards the right.</p>
+</div>
+<div id="section3" class="container-fluid">
+  <h1>Pages vs Ratings</h1>
+    <p>Are longer books given a better scores? A minor tendency but nothing special (it's confounded by having just 5 possible numbers in ratings)</p>
+    </br>
+    <code>g = sns.jointplot("Number of Pages", "My Rating", data=cleaned_df, kind="reg", height=7, ylim=[0.5,5.5])</code>
+    </br>
+    <img src="/static/img/22.png" alt="graph 2">
+    </br>
+    <p>I seem to mostly read books at around 200 to 300 pages so it's hard to tell whether I give longer books better ratings. It's also a nice example
+        that in regards to linear regression, a p-value as tiny as this one doesn't mean much, the r-value is still bad.</p>
+</div>
+<div id="section4" class="container-fluid">
+  <h1>Ratings vs Bookshelves</h1>
+    <p>Let's parse ratings for books and make a violin plot for the 6 categories with the most rated books!</p>
+    </br>
+    <pre><code>CATEGORIES = 6 # number of most crowded categories to plot
 
-    // Parse XML Response
-    var xml = XmlService.parse(response.getContentText());
-    var results = xml.getRootElement().getChildren('search')[0];
+# we have to fiddle a bit - we have to count the ratings by category,
+# since each book can have several comma-delimited categories
+# TODO: find a pandas-like way to do this
 
-    // Save the result in JSON format
-    results.getChild('results').getChildren().forEach(function(result) {
-      result.getChildren('best_book').forEach(function(book) {
-        searchResults.push({
-          title: book.getChild('title').getText(),
-          author: book.getChild('author').getChild('name').getText(),
-          thumbnail: book.getChild('image_url').getText(),
-          rating: result.getChild("average_rating").getText(),
-          url: baseUrl + result.getChild("id").getText()
-        });
-      });
-    });
+shelves_ratings = defaultdict(list) # key: shelf-name, value: list of ratings
+shelves_counter = Counter() # counts how many books on each shelf
+shelves_to_names = defaultdict(list) # key: shelf-name, value: list of book names
+for index, row in cleaned_df.iterrows():
+    my_rating = row["My Rating"]
+    if my_rating == 0:
+        continue
+    if pd.isnull(row["Bookshelves"]):
+        continue
 
-  }return searchResults;
+    shelves = row["Bookshelves"].split(",")
 
+    for s in shelves:
+        # empty shelf?
+        if not s: continue
+        s = s.strip() # I had "non-fiction" and " non-fiction"
+        shelves_ratings[s].append(my_rating)
+        shelves_counter[s] += 10
+        shelves_to_names[s].append(row.Title)
 
-}
-                searchBooks_('harry_Potter');
-                </script>
+names = []
+ratings = []
+for name, _ in shelves_counter.most_common(CATEGORIES):
+    for number in shelves_ratings[name]:
+        names.append(name)
+        ratings.append(number)
 
-                <form class='form-search'>
-                    <input type='text' name='book_title' class='form-control' placeholder='Book Title' required='' autofocus=''>
-                    <input type='password' name='author' class='form-control' placeholder='Author' required=''>
-                    <br/>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
-                        </div>
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-                        </div>
-                    </div>
-                    <!--
-                    <br/>
-                    TODO: add input to attach a camera input
-                    -->
-                    <br/>
-                    <div class='row'>
-                        <div class='col-lg-4 col-md-3 col-sm-0'>
-                        </div>
-                        <div class='col-lg-4 col-md-6 col-sm-12'>
-                            <button class='btn btn-lg btn-primary btn-block' name='scan' type='submit'>Scan</button>
-                            <br/>
-                            <a class="btn btn-success btn-lg btn-block" href="/charts">
-                                Graphs?
-                            </a>
-                            <br/>
-                        </div>
-                        <div class='col-lg-4 col-md-3 col-sm-0'>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class='col-lg-1 col-sm-1'>
-            </div>
-        </div>
-    </form>
-{% endblock %}
+full_table = pd.DataFrame({"Category":names, "Rating":ratings})
+
+# if we don't use scale=count here then each violin has the same area
+sns.violinplot(x = "Category", y = "Rating", data=full_table, scale='count')</code></pre>
+    </br>
+    <img src="/static/img/3.png" alt="graph 3">
+    <p>There is some bad SF out there!</p>
+</div>
+<div id="section5" class="container-fluid">
+  <h1>Heatmap of dates read</h1>
+    <p>Parses the "dates read" for each book read, bins them by month, and makes a heatmap to show in which months
+        I read more than in others. Also makes a lineplot for books read, split up by year.</p>
+    </br>
+    <pre><code># we need a dataframe in this format:
+# year months books_read
+# I am sure there's some magic pandas function for this
+
+read_dict = defaultdict(int) # key: (year, month), value: count of books read
+for date in sorted_dates:
+    this_year = date.year
+    this_month = date.month
+    read_dict[ (this_year, this_month) ] += 1
+
+first_date = sorted_dates[0]
+
+first_year = first_date.year
+first_month = first_date.month
+
+todays_date = datetime.datetime.today()
+todays_year = todays_date.year
+todays_month = todays_date.month
+
+all_years = []
+all_months = []
+all_counts = []
+for year in range(first_year, todays_year+1):
+    for month in range(1, 13):
+        if (year == todays_year) and month > todays_month:
+            # don't count future months
+            # it's 2015-12 now so a bit hard to test
+            break
+        this_count = read_dict[ (year, month) ]
+        all_years.append(year)
+        all_months.append(month)
+        all_counts.append(this_count)
+
+# now get it in the format heatmap() wants
+df = pd.DataFrame( { "month":all_months, "year":all_years, "books_read":all_counts } )
+dfp = df.pivot("month", "year", "books_read")
+
+# now make the heatmap
+ax = sns.heatmap(dfp, annot=True, vmin=0, vmax=10)</code></pre>
+    </br>
+    <img src="/static/img/4.png" alt="graph 4">
+    <p>What happened in May 2016!?</p>
+    </br>
+</div>
+<div id="section6" class="container-fluid">
+  <h1>Books read by year</h1>
+    </br>
+    <pre><code>g = sns.FacetGrid(df, col="year", sharey=True, sharex=True, col_wrap=4)
+g.map(plt.scatter, "month", "books_read")
+g.set_ylabels("Books read")
+g.set_xlabels("Month")
+pylab.xlim(1, 12)
+pylab.show()</code></pre>
+    </br>
+    <img src="/static/img/5.png" alt="graph 5">
+    </br>
+    <p>It's nice how reading behaviour (Goodreads usage) connects over the months - it's slows up until 2014, stays
+        about constant from 2015-2017, and now goes down again.</p>
+
+</div>
+<div id="section7" class="container-fluid">
+  <h1>Word Cloud</h1>
+    <p>This one removes noisy words and creates a word-cloud of most commonly used words in the reviews.</p>
+        </br>
+    <pre><code>def replace_by_space(word):
+    new = []
+    for letter in word:
+        if letter in REMOVE:
+            new.append(' ')
+        else:
+            new.append(letter)
+    return ''.join(new)
+
+STOP = stopwords.words("english")
+html_clean = re.compile('<.*?>')
+gr_clean = re.compile('\[.*?\]')
+PRINTABLE = string.printable
+REMOVE = set(["!","(",")",":",".",";",",",'"',"?","-",">","_"])
+
+all_my_words = []
+all_my_words_with_stop_words = []
+
+reviews = cleaned_df["My Review"]
+
+num_reviews = 0
+num_words = 0
+for row in reviews:
+    if pd.isnull(row):
+        continue
+    review = row.lower()
+    if not review:
+        # empty review
+        continue
+    # clean strings
+    cleaned_review = re.sub(html_clean, '', review)
+    cleaned_review = re.sub(gr_clean, '', cleaned_review)
+    all_my_words_with_stop_words += cleaned_review
+    cleaned_review = replace_by_space(cleaned_review)
+    cleaned_review = "".join(filter(lambda x: x in PRINTABLE, cleaned_review))
+    # clean words
+    cleaned_review = cleaned_review.split()
+    cleaned_review = list(filter(lambda x: x not in STOP, cleaned_review))
+    num_words += len(cleaned_review)
+    all_my_words += cleaned_review
+    num_reviews += 1
+
+print("You have %s words in %s reviews"%(num_words, num_reviews))
+
+# WordCloud takes only string, no list/set
+wordcloud = WordCloud(max_font_size=400, width=1600, height=1000).generate(' '.join(all_my_words))
+pylab.imshow(wordcloud)
+pylab.axis("off")
+pylab.show()</code></pre>
+    </br>
+    <img src="/static/img/6.png" alt="graph 6">
+    </br>
+    <h3>There is still more!</h3>
+    <p>Please check the Jupyter notebook for a more in-depth visual representation.</p>
+</div>
+</body>
+</html>
