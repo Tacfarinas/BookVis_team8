@@ -2,12 +2,12 @@
 
 Jupyter notebook was used to generates visual representation to a user's library as it was exported from Goodreads. Below are the results of my personal library. 
 
-You can use it with your own data - go here a and press "Export your library" to get your own csv. 
+You can use it with your own data - go to https://www.goodreads.com/review/import and press "Export your library" to get your own csv. 
 
 To get the interactive version. Replace the path to my Goodreads exported file by yours in the ipynb file or over-write over the CSV with the same file name. 
 
 ### Heroku Link
-
+https://s14a-final-project.herokuapp.com/
 
 ### Prerequisites
 
