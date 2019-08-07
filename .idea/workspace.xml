@@ -4,9 +4,7 @@
     <bookmark url="file://$PROJECT_DIR$/static/js/api.js" description="function searchBooks_(query) {&#10;&#10;  var baseUrl = &quot;h..." line="4" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6eed6dbc-cd0b-40b6-8363-190fbd173348" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="6eed6dbc-cd0b-40b6-8363-190fbd173348" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +25,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="217">
+            <state relative-caret-position="1612">
               <caret line="52" column="40" selection-start-line="52" selection-start-column="40" selection-end-line="52" selection-end-column="40" />
             </state>
           </provider>
@@ -182,6 +180,7 @@
       <workItem from="1565132910471" duration="8737000" />
       <workItem from="1565145807355" duration="1021000" />
       <workItem from="1565148138166" duration="144000" />
+      <workItem from="1565148407399" duration="234000" />
     </task>
     <task id="LOCAL-00001" summary="final">
       <created>1565148189779</created>
@@ -205,9 +204,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-6" y="24" width="1452" height="942" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21561605" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21848138" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -221,7 +219,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.32909784" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.32909784" />
       <window_info anchor="bottom" id="Python Console" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
